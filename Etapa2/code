@@ -1,1 +1,203 @@
+#include <ESP8266WiFi.h>
+#include <WiFiServer.h>
+ 
+  
+ 
+const char* ssid = "iPhone Aercio"; // Nome da Rede
+ 
+const char* password = "123456789"; //Password da rede
+
+  
+ 
+int ledPin = 13; // GPIO13 do ESP8266 e D7 do NodeMC, este pino define a entrada do relé para ativar a fechadura
+ 
+WiFiServer server(80); // Porta 80
+
+int value = LOW;
+
+int aux = 0;
+  
+ 
+void setup() {
+ 
+Serial.begin(115200); // Velocidade na IDE do arduino
+ 
+delay(10);
+ 
+pinMode(ledPin, OUTPUT); // Define o D7 como saída
+ 
+digitalWrite(ledPin, LOW); // O LED começa desligado 
+  
+ 
+// Comunicação com a rede WiFi
+ 
+Serial.println("oi");
+ 
+Serial.println();
+ 
+Serial.print("Connecting to "); // Mensagem apresentada no monitor série
+ 
+Serial.println(ssid); // Apresenta o nome da rede no monitor série
+  
+ 
+WiFi.begin(ssid, password); // Inicia a ligação a rede
+ 
+while (WiFi.status() != WL_CONNECTED) {
+ 
+delay(500);
+ 
+Serial.print("."); // Enquanto a ligação não for efectuada com sucesso é apresentado no monitor série uma sucessão de “.”
+ 
+}
+ 
+Serial.println("");
+ 
+Serial.println("WiFi connected"); // Se a ligação é efectuada com sucesso apresenta esta mensagem no monitor série
+ 
+  
+ 
+// Servidor
+ 
+server.begin(); // Comunicação com o servidor
+ 
+Serial.println("Servidor iniciado"); //é apresentado no monitor série que o  servidor foi iniciado
+  
+ 
+// Impressão do endereço IP
+ 
+Serial.print("Use o seguinte URL para a comunicação: ");
+ 
+Serial.print("http://");
+ 
+Serial.print(WiFi.localIP()); //Abrindo o Brower com este IP acedemos á pagina HTML de controlo dos LED´s, sendo que este IP só está disponível na rede à qual o ESP8266 se encontra ligado
+ 
+Serial.println("/"); 
+}
+    
+void loop() {
+ 
+// Verificação se o cliente está conectado
+ 
+WiFiClient client = server.available();
+ 
+if (!client) { // Verifica se o cliente está conectado ao servidor, executa este ciclo até estar conectado  
+ 
+return;
+ 
+}
+ 
+  
+ 
+// Espera até o cliente enviar dados
+ 
+Serial.println("novo cliente"); //Apresenta esta mensagem quando o cliente se liga ao servidor
+ 
+while(!client.available()){
+ 
+delay(1);
+ 
+}
+  
+ 
+// Ler a primeira linha do pedido
+ 
+String request = client.readStringUntil('\r');
+ 
+Serial.println(request);
+ 
+client.flush();
+  
+ 
+// Operação do pedido 
+ 
+if (request.indexOf("/LED") != -1 and aux == 0)  {
+
+ 
+  digitalWrite(ledPin, HIGH); // Se o pedido no LedPin for LED=ON, acende o LED
+   
+  value = HIGH;
+
+  aux = 1;
+   
+delay(500);
+ 
+}
+if (request.indexOf("/LED") != -1 and aux == 1)  {
+
+ 
+  digitalWrite(ledPin, LOW); // Após o delay ele vai desligar e permanecer desligado até que se pressione o botão novamente
+
+  value = LOW;
+   
+}
+
+if (request.indexOf("/LED1") != -1 and aux == 1)  {
+
+ 
+  digitalWrite(ledPin, HIGH); // Se o pedido no LedPin for LED=ON, acende o LED
+
+  aux = 0;
+
+  value = HIGH;
+
+  delay(500);
+   
+}
+if (request.indexOf("/LED1") != -1 and aux == 0)  {
+
+ 
+  digitalWrite(ledPin, LOW); // Após o delay ele vai desligar e permanecer desligado até que se pressione o botão novamente
+
+  value = LOW;
+   
+} 
+ 
+// Inicialização da página HTML
+ 
+// Retorno do resposta
+ 
+client.println("HTTP/1.1 200 OK");
+ 
+client.println("Content-Type: text/html");
+ 
+client.println(""); //  do not forget this one
+ 
+client.println("<!DOCTYPE HTML>");
+ 
+client.println("<html>");
+  
+ 
+client.print("Estado da fechadura: ");
+  
+ 
+if(value == HIGH) { // Se está ligado apresenta “on”
+ 
+client.print("On");
+ 
+} else {
+ 
+client.print("Off");// Se está desligado apresenta “Off”
+ 
+}
+
+value = LOW;
+ 
+client.println("<br><br>");
+
+if(aux == 0){ 
+  client.println("led0");
+  client.println("<a href=\"/LED\"\"><button>Turn On </button></a>");// Ligar o LED corresponde Turn On
+}
+if(aux == 1){
+    client.println("led1");
+   client.println("<a href=\"/LED1\"\"><button>Turn On </button></a>");
+} 
+delay(1);
+ 
+Serial.println("Cliente desconectado"); // Depois do cliente efectuar o pedido apresenta esta mensagem no monitor série
+ 
+Serial.println("");
+  
+ 
+}
 
