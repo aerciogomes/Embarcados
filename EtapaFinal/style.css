@@ -1,0 +1,29 @@
+body{
+ 
+  background-color: #2E4053;
+  color: white;
+}
+
+.lightButton{
+  font-size: 1.5em;
+  font-family: Verdana;
+  padding: 10px;
+}
+.page-header{
+  text-align: center;
+}
+input{
+  color:black;
+}
+.form-control{
+  margin: 10px 50% 20px 0px;
+}
+#login{
+  padding: 8px 45% ;
+  margin-top: 10px;
+  
+}
+.lightStatus{
+  margin-left: 45%;
+  margin-top: 15%;
+}

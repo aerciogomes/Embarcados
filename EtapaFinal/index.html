@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Fechadura</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase.js"></script>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css"/>
+  </head>
+  <body>
+    <!--
+    <h1 class="lightStatus"></h1>
+    <button class="lightButton">Click Me!</button>
+    -->
+    <div class="container">
+
+      <div class="page-header" >
+        <h1>Acesse sua conta com seu cadastro</h1>
+      </div>
+  
+      <div class="row" id="cadastro">
+        <div class="col-sm-4">
+
+        </div>
+        <div class="col-sm-4" id="cadastro">
+            <h2 >Login</h2>
+          <form class="formulario">
+            <div class="form-grup">
+              <div for="email">Email</div>
+              <input class="form-control" type="email" name="email" placeholder="Digite seu email" id="email">              
+            </div>
+            <div class="form-grup">
+              <div for="senha">Senha</div>
+              <input class="form-control" type="password" name="senha" placeholder="Digite sua senha" id="senha">
+            </div>
+            <button type="submit" class="btn btn-warning" id="login">Login</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="row" id="botao-fechadura" hidden>
+        
+
+        <div class="col-sm-12">
+          <button type="button" class="btn btn-danger lightStatus"></button>
+        </div>
+      </div>
+  
+    </div>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </body>
+</html>
