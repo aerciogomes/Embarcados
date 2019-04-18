@@ -43,14 +43,25 @@ $(document).ready(function(){
     e.preventDefault();
     email = $("#email").val();
     senha = $("#senha").val();
-    console.log("era p sumir");
-    console.log(email,senha);
-    $("#cadastro").fadeOut();
-		$("#botao-fechadura").fadeIn();
+
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, senha)
+      .then(function (result) {
+          console.log(result);
+          //displayName.innerText = 'Bem vindo, ' + email;
+          alert('Autenticado ' + email);
+          console.log("era p sumir");
+          console.log(email,senha);
+          $("#cadastro").fadeOut();
+          $("#botao-fechadura").fadeIn();
+      })
+      .catch(function (error) {
+          console.error(error.code);
+          console.error(error.message);
+          alert('Falha ao autenticar, verifique o erro no console.')
+      });
   });
 });
 
-/* modo de ocultar labels:
-document.getElementById("cadastro").style.display = 'none';
-document.getElementById("cadastro").style.display = 'block';
-*/
+  
