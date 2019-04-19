@@ -1,8 +1,8 @@
 #include <FirebaseArduino.h>
 #include <ESP8266WiFi.h>
 
-#define WIFI_SSID "LASIC_LMI"
-#define WIFI_PASSWORD "_lasic_lmici"
+#define WIFI_SSID "VIVO-1A50"
+#define WIFI_PASSWORD "2MtfEvm6RR"
 
 //this firebase project was deleted
 //you'll need to enter your own firebase info
@@ -34,11 +34,14 @@ void loop() {
   int ledStatus = Firebase.getInt("ledStatus");
   if(ledStatus == 1){
     digitalWrite(ledPower, HIGH);
+    delay(800);
+    Firebase.set("ledStatus", 0);
     Serial.println("Led deve está acesso");
   } else {
     digitalWrite(ledPower, LOW);
     Serial.println("Led deve está apagado");
   }
+  
 
   //set data:
   //Firebase.set(ledStatus, "1");
