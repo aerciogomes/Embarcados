@@ -18,13 +18,19 @@ $(document).ready(function(){
   var database = firebase.database();
   var ledStatus;
   
+
   database.ref().on("value", function(snap){
     ledStatus = snap.val().ledStatus;
     if(ledStatus == 1){
-      $(".lightStatus").text("The light is on");
+      $(".lightStatus").text("The door locker is on");
+      $("#alerta-fechadura").fadeIn();
     } else {
-      $(".lightStatus").text("The light is off");
+      $(".lightStatus").text("The door locker is off");
+      $("#alerta-fechadura").fadeOut();
     }
+  });
+  $("#fecha-alerta").click(function(){
+    $("#alerta-fechadura").fadeOut();
   });
 
   $(".lightButton").click(function(){
@@ -55,13 +61,12 @@ $(document).ready(function(){
           console.log(email,senha);
           $("#cadastro").fadeOut();
           $("#botao-fechadura").fadeIn();
+          $("#taginicial").text("Aperte o Botão para acionar a fechadura");
       })
       .catch(function (error) {
           console.error(error.code);
           console.error(error.message);
-          alert('Falha ao autenticar, verifique o erro no console.')
+          alert(error.code,error.message);
       });
   });
 });
-
-  
